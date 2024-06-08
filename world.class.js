@@ -25,9 +25,10 @@ class World {
         this.ctx.translate(this.camera_x, 0);
 
         this.addObjectsToMap(this.level.backgroundObjects);
+        this.addObjectsToMap(this.level.clouds);
         this.addtoMap(this.character);
         this.addObjectsToMap(this.level.enemies);
-        this.addObjectsToMap(this.level.clouds);
+
 
         this.ctx.translate(-this.camera_x, 0);
 
@@ -46,15 +47,25 @@ class World {
 
     addtoMap(mo) {
         if (mo.otherDirection) {
-            this.ctx.save();
-            this.ctx.translate(mo.width, 0);
-            this.ctx.scale(-1, 1);
-            mo.x = mo.x * -1;
+          this.flipImage(mo); 
         }
-        this.ctx.drawImage(mo.img, mo.x, mo.y, mo.width, mo.height);
+        mo.draw(this.ctx);
+        mo.drawFrame(this.ctx);
+        
         if (mo.otherDirection) {
-            this.ctx.restore();
-            mo.x = mo.x * -1;
+            this.flipImageBack(mo);
         }
+    }
+
+    flipImage(mo){
+        this.ctx.save();
+        this.ctx.translate(mo.width, 0);
+        this.ctx.scale(-1, 1);
+        mo.x = mo.x * -1;
+    }
+    
+    flipImageBack(mo){
+        this.ctx.restore();
+            mo.x = mo.x * -1;
     }
 }

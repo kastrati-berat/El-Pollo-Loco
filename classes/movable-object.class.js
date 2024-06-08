@@ -8,11 +8,40 @@ class MovableObject {
     currentImage = 0;
     speed = 0.15;
     otherDirection = false;
+    speedY = 0;
+    accerlation = 2.5;
 
+
+    applyGravity() {
+        setInterval(() => {
+            if (this.isAboveGround() || this.speedY > 0) {
+
+                this.y -= this.speedY;
+                this.speedY -= this.accerlation;
+            }
+        }, 1000 / 25);
+
+    }
+
+    isAboveGround() {
+        return this.y < 130;
+    }
 
     loadImage(path) {
         this.img = new Image();
         this.img.src = path;
+    }
+
+    draw(ctx){
+        ctx.drawImage(this.img, this.x, this.y, this.width, this.height); 
+    }
+
+    drawFrame(ctx){
+        ctx.beginPath();
+        ctx.lineWidth = "5";
+        ctx.strokeStyle = "blue";
+        ctx.rect(this.x, this.y, this.width, this.height);
+        ctx.stroke();
     }
 
     loadImages(arr) {
@@ -24,23 +53,26 @@ class MovableObject {
     }
 
     moveRight() {
-        console.log('moving-right');
+        this.x += this.speed;
     }
 
-
     moveLeft() {
+        this.x -= this.speed;
         setInterval(() => {
-            this.x -= this.speed;
+
         }, 1000 / 60);
     }
 
-
-    playAnimation() {
-
-        let i = this.currentImage % this.IMAGES_WALKING.length;
-        let path = this.IMAGES_WALKING[i];
-        this.img = this.imageCache[path];
-        this.currentImage++;
-
+    jump() {
+        this.speedY = 30;
     }
+
+
+  playAnimation(images) {
+    let i = this.currentImage % images.length;
+    let path = images[i];
+    this.img = this.imageCache[path];
+    this.currentImage++;
+}
+
 }
