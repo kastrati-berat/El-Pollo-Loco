@@ -1,5 +1,4 @@
 class World {
-
     character = new Character();
     level = level1;
     canvas;
@@ -8,8 +7,6 @@ class World {
     camera_x = 0;
     statusBar = new Statusbar();
     throwableObjects = [];
-
-
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -24,7 +21,6 @@ class World {
         this.character.world = this;
     }
 
-
     run() {
         setInterval(() => {
             this.checkCollisions();
@@ -32,15 +28,14 @@ class World {
         }, 200);
     }
 
-    checkThrowObjects(){
+    checkThrowObjects() {
         if (this.keyboard.D) {
             let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);
             this.throwableObjects.push(bottle);
         }
     }
 
-
-    checkCollisions(){
+    checkCollisions() {
         this.level.enemies.forEach((enemy) => {
             if (this.character.isColliding(enemy)) {
                 this.character.hit();
@@ -61,14 +56,13 @@ class World {
         this.addtoMap(this.statusBar);
         this.ctx.translate(this.camera_x, 0);
 
-
         this.addtoMap(this.character);
         this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.throwableObjects);
 
         this.ctx.translate(-this.camera_x, 0);
 
-        //Draw() wird immer wieder aufgerufen!
+        // Draw() wird immer wieder aufgerufen!
         let self = this;
         requestAnimationFrame(function () {
             self.draw();
@@ -78,7 +72,7 @@ class World {
     addObjectsToMap(objects) {
         objects.forEach(o => {
             this.addtoMap(o);
-        })
+        });
     }
 
     addtoMap(mo) {
