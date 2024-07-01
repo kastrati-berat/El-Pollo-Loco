@@ -6,6 +6,8 @@ class MovableObject extends DrawableObject {
     accerlation = 2.5;
     energy = 100;
     lastHit = 0;
+    isMoving = false;
+
 
     applyGravity() {
         setInterval(() => {
@@ -76,5 +78,7 @@ class MovableObject extends DrawableObject {
         timepassed = timepassed / 1000; // Difference in s 
         return timepassed < 1;
     }
+
+    
 
 }
