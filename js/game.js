@@ -1,14 +1,32 @@
 let canvas;
+let ctx;
 let world;
 let keyboard = new Keyboard();
 
 function init() {
     canvas = document.getElementById('canvas');
+    ctx = canvas.getContext('2d');
+    let img = new Image();
+    img.src = 'img/9_intro_outro_screens/start/startscreen_1.png';
+    img.onload = () => {
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    };
+
+    
+    const startButton = document.getElementById('startButton');
+    startButton.style.display = 'block';
+    startButton.addEventListener('click', () => {
+        startButton.style.display = 'none';
+        initGame(); 
+    });
+}
+
+function initGame() {
     initLevel();
     world = new World(canvas, keyboard);
-
     console.log('My character is', world.character);
 }
+
 
 window.addEventListener("keydown", (e) => {
     if (e.keyCode == 68) {

@@ -28,7 +28,7 @@ h1{
     font-size: 64px;
     text-shadow: 2px 2px 2px rgb(0, 0, 0, 0.5);
     margin-top: 140px;
-    color: chartreuse;
+    color: #FFCD15;
 }
 
 .play{
@@ -45,7 +45,21 @@ h1{
 .text{
     margin-left: 60px;
     font-size: 20px;
-    color: chartreuse;
+    color: #FFCD15;
+}
+
+#startButton{
+    position: absolute;
+    top: 36%; 
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 50px;
+    font-weight: bolder;
+    border-radius: 24px;
+    font-family: 'zabras';
+    cursor: pointer;
+    background-color: #FFCD15;
+    color: #0C9DA9;
 }
 
 
