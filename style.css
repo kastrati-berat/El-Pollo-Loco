@@ -58,14 +58,10 @@ h1{
     border-radius: 24px;
     font-family: 'zabras';
     cursor: pointer;
-    background-color: #FFCD15;
-    color: #0C9DA9;
+    color: #FFCD15;
+    border: none;
+    background-color: transparent;
 }
-
-
-
-
-
 
 
 @media only screen and (max-width: 720px) {

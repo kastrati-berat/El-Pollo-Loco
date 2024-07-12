@@ -30,10 +30,12 @@ class World {
 
     checkThrowObjects() {
         if (this.keyboard.D) {
-            let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);
+            let direction = this.character.otherDirection ? -1 : 1;
+            let bottle = new ThrowableObject(this.character.x, this.character.y, direction);
             this.throwableObjects.push(bottle);
         }
     }
+    
 
     checkCollisions() {
         this.level.enemies.forEach((enemy) => {
