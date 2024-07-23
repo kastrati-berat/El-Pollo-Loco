@@ -1,4 +1,4 @@
-body{
+body {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -9,7 +9,7 @@ body{
     background-attachment: fixed;
 }
 
-canvas{
+canvas {
     background-color: black;
     padding: 0;
     margin: auto;
@@ -20,18 +20,20 @@ canvas{
     left: 0;
     right: 0;
 }
+
 @font-face {
     font-family: 'zabras';
-    src: url('fonts/zabars.ttf') format('truetype'); 
-} 
-h1{
+    src: url('fonts/zabars.ttf') format('truetype');
+}
+
+h1 {
     font-size: 64px;
     text-shadow: 2px 2px 2px rgb(0, 0, 0, 0.5);
     margin-top: 140px;
     color: #FFCD15;
 }
 
-.play{
+.play {
     position: relative;
     top: 650px;
     display: flex;
@@ -39,18 +41,20 @@ h1{
     text-align: center;
     align-items: center;
 }
-.play img{
+
+.play img {
     height: 130px;
 }
-.text{
+
+.text {
     margin-left: 60px;
     font-size: 20px;
     color: #FFCD15;
 }
 
-#startButton{
+#startButton {
     position: absolute;
-    top: 36%; 
+    top: 36%;
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 50px;
@@ -73,8 +77,9 @@ h1{
 @media only screen and (max-width: 480px) {
     canvas {
         height: 100vh;
-        
+
     }
+
     h1 {
         display: none;
     }

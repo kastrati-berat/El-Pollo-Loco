@@ -1,5 +1,4 @@
 class MovableObject extends DrawableObject {
-
     speed = 0.15;
     otherDirection = false;
     speedY = 0;
@@ -23,7 +22,7 @@ class MovableObject extends DrawableObject {
     isAboveGround() {
         if (this instanceof ThrowableObject) {
             return true;
-        }else{
+        } else {
 
         }
         return this.y < 130;
@@ -79,6 +78,6 @@ class MovableObject extends DrawableObject {
         return timepassed < 1;
     }
 
-    
+
 
 }

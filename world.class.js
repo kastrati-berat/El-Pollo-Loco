@@ -6,12 +6,17 @@ class World {
     keyboard;
     camera_x = 0;
     statusBar = new Statusbar();
+    coinStatusbar = new CoinStatusbar();
     throwableObjects = [];
+    coins = [];
+    collectedCoins = 0;
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
+        this.level = level1;
+        this.coins = this.level.coins;
         this.draw();
         this.setWorld();
         this.run();
@@ -25,6 +30,7 @@ class World {
         setInterval(() => {
             this.checkCollisions();
             this.checkThrowObjects();
+            this.checkCollectCoins();
         }, 200);
     }
 
@@ -46,6 +52,19 @@ class World {
         });
     }
 
+    checkCollectCoins() {
+        this.coins.forEach((coin, index) => {
+            if (this.character.isColliding(coin)) {
+                this.coins.splice(index, 1);
+                this.collectedCoins++;
+                const totalCoinsRequired = 10;
+                let coinPercentage = Math.min((this.collectedCoins / totalCoinsRequired) * 100, 100);
+                this.coinStatusbar.setPercentage(coinPercentage);
+            }
+        });
+    }
+    
+
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
@@ -56,12 +75,13 @@ class World {
 
         this.ctx.translate(-this.camera_x, 0);
         this.addtoMap(this.statusBar);
+        this.addtoMap(this.coinStatusbar);
         this.ctx.translate(this.camera_x, 0);
 
         this.addtoMap(this.character);
         this.addObjectsToMap(this.level.enemies);
+        this.addObjectsToMap(this.coins);
         this.addObjectsToMap(this.throwableObjects);
-
         this.ctx.translate(-this.camera_x, 0);
 
         // Draw() wird immer wieder aufgerufen!

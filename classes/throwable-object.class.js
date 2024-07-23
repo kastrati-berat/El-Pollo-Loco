@@ -1,6 +1,6 @@
 class ThrowableObject extends MovableObject {
     throw_sound = new Audio('Audio/throwing_bottles.mp3');
-    direction = 1; 
+    direction = 1;
 
     constructor(x, y, direction) {
         super().loadImage('img/7_statusbars/3_icons/icon_salsa_bottle.png');
@@ -8,7 +8,7 @@ class ThrowableObject extends MovableObject {
         this.y = y;
         this.height = 100;
         this.width = 120;
-        this.direction = direction; 
+        this.direction = direction;
         this.throw();
     }
 
@@ -28,9 +28,9 @@ class ThrowableObject extends MovableObject {
             ctx.translate(this.x + this.width / 2, this.y + this.height / 2);
             ctx.scale(-1, 1);
             ctx.translate(-this.x - this.width / 2, -this.y - this.height / 2);
-            super.draw(ctx); 
+            super.draw(ctx);
             ctx.restore();
-            
+
         } else {
             super.draw(ctx);
         }

@@ -2,7 +2,7 @@ let canvas;
 let ctx;
 let world;
 let keyboard = new Keyboard();
-start_sound = new Audio('Audio/Guitar.mp3'); 
+start_sound = new Audio('Audio/Guitar.mp3');
 
 function init() {
     canvas = document.getElementById('canvas');
@@ -13,12 +13,12 @@ function init() {
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
     };
 
-    
+
     const startButton = document.getElementById('startButton');
     startButton.style.display = 'block';
     startButton.addEventListener('click', () => {
         startButton.style.display = 'none';
-        initGame(); 
+        initGame();
     });
 }
 
