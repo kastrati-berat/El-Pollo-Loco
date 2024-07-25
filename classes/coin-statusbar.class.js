@@ -14,10 +14,10 @@ class CoinStatusbar extends DrawableObject {
         super();
         this.loadImages(this.IMAGES);
         this.x = 20;
-        this.y = 60; // Position unterhalb der Gesundheitsleiste
+        this.y = 60; 
         this.width = 200;
         this.height = 60;
-        this.setPercentage(0); // Set initial percentage
+        this.setPercentage(0); 
     }
 
     setPercentage(coinPercentage) {
