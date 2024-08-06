@@ -1,5 +1,5 @@
 class Character extends MovableObject {
-
+    snoring_sound = new Audio('Audio/schnarchen.mp3');
     height = 300;
     width = 150;
     y = 50;
@@ -86,7 +86,7 @@ class Character extends MovableObject {
     }
 
     animate() {
-        setInterval(() => {
+        this.soundInterval = setInterval(() => {
             this.walking_sound.volume = 1.0;
             this.isMoving = false;
             if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
@@ -111,9 +111,7 @@ class Character extends MovableObject {
             this.world.camera_x = -this.x + 100;
         }, 1000 / 60);
 
-
-
-        setInterval(() => {
+        this.animationInterval = setInterval(() => {
             if (this.isDead()) {
                 this.playAnimation(this.IMAGES_DEAD);
             } else if (this.isHurt()) {
@@ -128,12 +126,16 @@ class Character extends MovableObject {
                 } else {
                     this.idleTimer += 50; 
                     if (this.idleTimer >= 6000) { 
-                        this.longIdle = true; 
+                        this.longIdle = true;
+                        this.snoring_sound.volume = 0.3;
+                        this.snoring_sound.play(); 
                     }
                     if (this.longIdle) {
                         this.playAnimation(this.IMAGES_LONG_IDLE);
                     } else {
-                        if (this.idleTimer >= 3000) { 
+                        if (this.idleTimer >= 100) { 
+                            this.snoring_sound.pause();
+                            this.snoring_sound.currentTime = 0;
                             this.loadImages(this.IMAGES_IDLE); 
                             this.playAnimation(this.IMAGES_IDLE);
                         }
@@ -142,4 +144,13 @@ class Character extends MovableObject {
             }
         }, 100);
     }
+    stopAllSounds() {
+        [this.walking_sound, this.jump_sound, this.snoring_sound].forEach(sound => {
+            sound.pause();
+            sound.currentTime = 0;
+        });
+        clearInterval(this.soundInterval);
+        clearInterval(this.animationInterval);
+    }
+    
 }

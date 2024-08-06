@@ -8,6 +8,7 @@ class ThrowableObject extends MovableObject {
         this.y = y;
         this.height = 100;
         this.width = 120;
+        this.world = world;
         this.direction = direction;
         this.throw();
     }
@@ -20,6 +21,7 @@ class ThrowableObject extends MovableObject {
         setInterval(() => {
             this.x += 10 * this.direction;
         }, 25);
+        this.world.updateBottleStatusbar(-20);
     }
 
     draw(ctx) {

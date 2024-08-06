@@ -36,13 +36,18 @@
 
     <canvas id="canvas" width="720" height="480"></canvas>
     <button id="startButton">Start Game</button>
-    <div class="play"><img src="./img/wasd.png">
+    <div id="dialog-overlay"  onclick="closeDialog()"></div>
+    <div id="dialog" class="play">
+        <img src="./img/wasd.png" alt="Controls">
         <div class="text">
             <h2>W : Jump</h2>
             <h2>A : Move left</h2>
             <h2>D : Move Right</h2>
             <h2>E : Throw Salsa Bottles</h2>
         </div>
+        <button id="closeDialog" onclick="closeDialog()">Close</button>
+    </div>
+    <button id="openDialogButton" onclick="openDialog()">How to Play</button>
     </div>
 
 

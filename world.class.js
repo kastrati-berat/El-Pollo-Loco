@@ -13,7 +13,12 @@ class World {
     bottles = [];
     collectedCoins = 0;
     collectedBottles = 0;
-
+    gameOver = false;
+    gameOverImage = new Image();
+    backgroundImage = new Image();
+    gameOverSound = new Audio('Audio/game over.wav');
+    backgroundMusic = new Audio('Audio/Guitar.mp3');
+    
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
@@ -21,6 +26,13 @@ class World {
         this.level = level1;
         this.coins = this.level.coins;
         this.bottles = this.level.bottles;
+        this.backgroundImage.src = 'img/5_background/second_half_background.png';
+        this.gameOverImage.src = 'img/9_intro_outro_screens/game_over/game over.png';
+        
+        this.backgroundMusic.loop = true;
+        this.backgroundMusic.volume = 0.3;
+        this.backgroundMusic.play();
+        
         this.draw();
         this.setWorld();
         this.run();
@@ -32,19 +44,24 @@ class World {
 
     run() {
         setInterval(() => {
-            this.checkCollisions();
-            this.checkThrowObjects();
-            this.checkCollectCoins();
-            this.checkCollectBottles();
+            if (!this.gameOver) {
+                this.checkCollisions();
+                this.checkThrowObjects();
+                this.checkCollectCoins();
+                this.checkCollectBottles();
+            }
         }, 200);
     }
     
-
     checkThrowObjects() {
-        if (this.keyboard.D) {
-            let direction = this.character.otherDirection ? -1 : 1;
-            let bottle = new ThrowableObject(this.character.x, this.character.y, direction);
-            this.throwableObjects.push(bottle);
+        if (this.keyboard.D && !this.gameOver) {
+            if (this.collectedBottles > 0) {
+                let direction = this.character.otherDirection ? -1 : 1;
+                let bottle = new ThrowableObject(this.character.x, this.character.y, direction, this);
+                this.throwableObjects.push(bottle);
+                this.collectedBottles--;
+                this.updateBottleStatusbar();
+            }
         }
     }
 
@@ -53,42 +70,78 @@ class World {
             if (this.character.isColliding(enemy)) {
                 this.character.hit();
                 this.statusBar.setPercentage(this.character.energy);
+                if (this.character.isDead()) {
+                    this.handleGameOver(); 
+                }
             }
         });
     }
 
     checkCollectCoins() {
-        this.coins.forEach((coin, index) => {
-            if (this.character.isColliding(coin)) {
-                this.coins.splice(index, 1);
-                this.collectedCoins++;
-                const totalCoinsRequired = 10;
-                let coinPercentage = Math.min((this.collectedCoins / totalCoinsRequired) * 100, 100);
-                this.coinStatusbar.setPercentage(coinPercentage);
-            }
-        });
+        if (!this.gameOver) {
+            this.coins.forEach((coin, index) => {
+                if (this.character.isColliding(coin)) {
+                    this.coins.splice(index, 1);
+                    this.collectedCoins++;
+                    const totalCoinsRequired = 10;
+                    let coinPercentage = Math.min((this.collectedCoins / totalCoinsRequired) * 100, 100);
+                    this.coinStatusbar.setPercentage(coinPercentage);
+                }
+            });
+        }
     }
 
     checkCollectBottles() {
-        this.bottles.forEach((bottle, index) => {
-            if (this.character.isColliding(bottle)) {
-                this.bottles.splice(index, 1);
-                this.collectedBottles++;
-                const totalBottlesRequired = 5;
-                let bottlePercentage = Math.min((this.collectedBottles / totalBottlesRequired) * 100, 100);
-                this.bottleStatusbar.setPercentage(bottlePercentage);
-            }
-        });
+        if (!this.gameOver) {
+            this.bottles.forEach((bottle, index) => {
+                if (this.character.isColliding(bottle)) {
+                    this.bottles.splice(index, 1);
+                    this.collectedBottles++;
+                    this.updateBottleStatusbar();
+                }
+            });
+        }
+    }
+
+    updateBottleStatusbar() {
+        const totalBottlesRequired = 5;
+        let bottlePercentage = Math.min((this.collectedBottles / totalBottlesRequired) * 100, 100);
+        this.bottleStatusbar.setPercentage(bottlePercentage);
+    }
+
+    handleGameOver() {
+        this.gameOver = true;
+        if (!this.backgroundMusic.paused) {
+            this.backgroundMusic.pause();
+            this.backgroundMusic.currentTime = 0;
+        }
+
+        this.gameOverSound.volume = 0.3;
+        this.gameOverSound.play();
+        
+        if (this.character) {
+            this.character.stopAllSounds();
+        }
+        this.showGameOver();
+
+        document.getElementById('startButton').style.display = 'block';
+    }
+    
+
+    showGameOver() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.drawImage(this.backgroundImage, 0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.drawImage(this.gameOverImage, 0, 0, this.canvas.width, this.canvas.height);
     }
 
     draw() {
+        if (this.gameOver) return;
+
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         this.ctx.translate(this.camera_x, 0);
         this.addObjectsToMap(this.level.backgroundObjects);
-
         this.addObjectsToMap(this.level.clouds);
-
         this.ctx.translate(-this.camera_x, 0);
         this.addtoMap(this.statusBar);
         this.addtoMap(this.coinStatusbar);
@@ -102,10 +155,7 @@ class World {
         this.addObjectsToMap(this.throwableObjects);
         this.ctx.translate(-this.camera_x, 0);
 
-        let self = this;
-        requestAnimationFrame(function () {
-            self.draw();
-        });
+        requestAnimationFrame(() => this.draw());
     }
 
     addObjectsToMap(objects) {

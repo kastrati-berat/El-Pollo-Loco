@@ -2,7 +2,7 @@ let canvas;
 let ctx;
 let world;
 let keyboard = new Keyboard();
-start_sound = new Audio('Audio/Guitar.mp3');
+
 
 function init() {
     canvas = document.getElementById('canvas');
@@ -21,16 +21,21 @@ function init() {
         initGame();
     });
 }
+function openDialog() {
+    document.getElementById('dialog').style.display = 'block';
+    document.getElementById('dialog-overlay').style.display = 'block';
+}
+
+function closeDialog() {
+    document.getElementById('dialog').style.display = 'none';
+    document.getElementById('dialog-overlay').style.display = 'none';
+}
 
 function initGame() {
     initLevel();
     world = new World(canvas, keyboard);
     console.log('My character is', world.character);
-    this.start_sound.loop = true;
-    this.start_sound.volume = 0.3;
-    this.start_sound.play();
 }
-
 
 window.addEventListener("keydown", (e) => {
     if (e.keyCode == 68) {
