@@ -14,28 +14,47 @@ function init() {
     };
 
 
-    const startButton = document.getElementById('startButton');
+    let startButton = document.getElementById('startButton');
     startButton.style.display = 'block';
     startButton.addEventListener('click', () => {
         startButton.style.display = 'none';
         initGame();
     });
+
+    let soundButton = document.getElementById('soundButton');
+    let soundImage = document.getElementById('soundImage');
+
+    soundButton.addEventListener('click', () => {
+        if (soundImage.src.includes('icons8-stumm-100.png')) {
+            soundImage.src = 'img/icons8-ton-100.png';
+            world.toggleSound(true);
+        } else {
+            soundImage.src = 'img/icons8-stumm-100.png';
+            world.toggleSound(false);
+        }
+    });
+
 }
+
+
 function openDialog() {
     document.getElementById('dialog').style.display = 'block';
     document.getElementById('dialog-overlay').style.display = 'block';
 }
+
 
 function closeDialog() {
     document.getElementById('dialog').style.display = 'none';
     document.getElementById('dialog-overlay').style.display = 'none';
 }
 
+
 function initGame() {
     initLevel();
     world = new World(canvas, keyboard);
     console.log('My character is', world.character);
 }
+
 
 window.addEventListener("keydown", (e) => {
     if (e.keyCode == 68) {

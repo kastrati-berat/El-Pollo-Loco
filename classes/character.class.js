@@ -1,5 +1,5 @@
 class Character extends MovableObject {
-    snoring_sound = new Audio('Audio/schnarchen.mp3');
+    
     height = 300;
     width = 150;
     y = 50;
@@ -70,6 +70,7 @@ class Character extends MovableObject {
     world;
     walking_sound = new Audio('Audio/walk.mp3');
     jump_sound = new Audio('Audio/jump.mp3');
+    snoring_sound = new Audio('Audio/schnarchen.mp3');
     idleTimer = 0; 
     longIdle = false;
 
@@ -144,6 +145,8 @@ class Character extends MovableObject {
             }
         }, 100);
     }
+
+
     stopAllSounds() {
         [this.walking_sound, this.jump_sound, this.snoring_sound].forEach(sound => {
             sound.pause();
@@ -151,6 +154,22 @@ class Character extends MovableObject {
         });
         clearInterval(this.soundInterval);
         clearInterval(this.animationInterval);
+    }
+
+    resumeAllSounds() {
+        [this.walking_sound, this.jump_sound, this.snoring_sound].forEach(sound => {
+            sound.volume = 1.0;
+        });
+
+        if (this.isMoving) {
+            this.walking_sound.play();
+        }
+        if (this.world.keyboard.UP && !this.isAboveGround()) {
+            this.jump_sound.play();
+        }
+        if (this.longIdle) {
+            this.snoring_sound.play();
+        }
     }
     
 }

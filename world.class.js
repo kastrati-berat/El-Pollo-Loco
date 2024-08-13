@@ -18,6 +18,7 @@ class World {
     backgroundImage = new Image();
     gameOverSound = new Audio('Audio/game over.wav');
     backgroundMusic = new Audio('Audio/Guitar.mp3');
+    soundOn = true;
     
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -36,6 +37,29 @@ class World {
         this.draw();
         this.setWorld();
         this.run();
+    }
+
+    toggleSound(isSoundOn) {
+        this.soundOn = isSoundOn;
+
+        if (isSoundOn) {
+            this.backgroundMusic.play();
+            this.backgroundMusic.volume = 0.3;
+            this.character.resumeAllSounds();
+        } else {
+            this.backgroundMusic.pause();
+            this.backgroundMusic.currentTime = 0;
+            
+        }
+    }
+
+    playSound(sound) {
+        if (sound) {
+            sound.volume = 1.0;
+            sound.play().catch(error => {
+                console.error("Error playing sound: ", error);
+            });
+        }
     }
 
     setWorld() {
@@ -115,7 +139,7 @@ class World {
             this.backgroundMusic.pause();
             this.backgroundMusic.currentTime = 0;
         }
-
+        
         this.gameOverSound.volume = 0.3;
         this.gameOverSound.play();
         
@@ -123,9 +147,9 @@ class World {
             this.character.stopAllSounds();
         }
         this.showGameOver();
-
         document.getElementById('startButton').style.display = 'block';
     }
+    
     
 
     showGameOver() {
