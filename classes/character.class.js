@@ -156,20 +156,29 @@ class Character extends MovableObject {
         clearInterval(this.animationInterval);
     }
 
-    resumeAllSounds() {
+    pauseAllSounds() {
         [this.walking_sound, this.jump_sound, this.snoring_sound].forEach(sound => {
-            sound.volume = 1.0;
+            sound.pause();
         });
+    }
 
-        if (this.isMoving) {
-            this.walking_sound.play();
-        }
-        if (this.world.keyboard.UP && !this.isAboveGround()) {
-            this.jump_sound.play();
-        }
-        if (this.longIdle) {
-            this.snoring_sound.play();
+    resumeAllSounds() {
+        if (this.world.soundOn) { 
+            [this.walking_sound, this.jump_sound, this.snoring_sound].forEach(sound => {
+                sound.volume = 1.0;
+            });
+    
+            if (this.isMoving) {
+                this.walking_sound.play();
+            }
+            if (this.world.keyboard.UP && !this.isAboveGround()) {
+                this.jump_sound.play();
+            }
+            if (this.longIdle) {
+                this.snoring_sound.play();
+            }
         }
     }
+    
     
 }

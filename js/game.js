@@ -3,7 +3,6 @@ let ctx;
 let world;
 let keyboard = new Keyboard();
 
-
 function init() {
     canvas = document.getElementById('canvas');
     ctx = canvas.getContext('2d');
@@ -13,7 +12,6 @@ function init() {
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
     };
 
-
     let startButton = document.getElementById('startButton');
     startButton.style.display = 'block';
     startButton.addEventListener('click', () => {
@@ -21,20 +19,23 @@ function init() {
         initGame();
     });
 
-    let soundButton = document.getElementById('soundButton');
-    let soundImage = document.getElementById('soundImage');
-
-    soundButton.addEventListener('click', () => {
-        if (soundImage.src.includes('icons8-stumm-100.png')) {
-            soundImage.src = 'img/icons8-ton-100.png';
-            world.toggleSound(true);
-        } else {
-            soundImage.src = 'img/icons8-stumm-100.png';
-            world.toggleSound(false);
-        }
-    });
-
+    checkOrientation();
 }
+
+function checkOrientation() {
+    const warning = document.querySelector('.portrait-warning');
+    const mobileControls = document.getElementById('mobileControls');
+    if (window.innerWidth <= 480 && window.innerHeight > window.innerWidth) {
+        warning.style.display = 'block';
+        mobileControls.style.display = 'none';
+    } else {
+        warning.style.display = 'none';
+        if (window.innerWidth <= 480) {
+            mobileControls.style.display = 'flex';
+        }
+    }
+}
+
 
 
 function openDialog() {
@@ -53,7 +54,37 @@ function initGame() {
     initLevel();
     world = new World(canvas, keyboard);
     console.log('My character is', world.character);
+    
+    let soundButton = document.getElementById('soundButton');
+    let soundImage = document.getElementById('soundImage');
+
+    soundButton.addEventListener('click', () => {
+        if (soundImage.src.includes('icons8-stumm-100.png')) {
+            soundImage.src = 'img/icons8-ton-100.png';
+            world.toggleSound(true);
+        } else {
+            soundImage.src = 'img/icons8-stumm-100.png';
+            world.toggleSound(false);
+        }
+    });
+
+    document.getElementById('btnLeft').addEventListener('touchstart', () => keyboard.LEFT = true);
+    document.getElementById('btnLeft').addEventListener('touchend', () => keyboard.LEFT = false);
+
+    document.getElementById('btnRight').addEventListener('touchstart', () => keyboard.RIGHT = true);
+    document.getElementById('btnRight').addEventListener('touchend', () => keyboard.RIGHT = false);
+
+    document.getElementById('btnJump').addEventListener('touchstart', () => keyboard.UP = true);
+    document.getElementById('btnJump').addEventListener('touchend', () => keyboard.UP = false);
+
+    document.getElementById('btnThrow').addEventListener('touchstart', () => keyboard.D = true);
+    document.getElementById('btnThrow').addEventListener('touchend', () => keyboard.D = false);
+
+window.addEventListener('resize', checkOrientation);
+window.addEventListener('load', checkOrientation)
 }
+
+
 
 
 window.addEventListener("keydown", (e) => {

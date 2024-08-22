@@ -29,7 +29,11 @@ class World {
         this.bottles = this.level.bottles;
         this.backgroundImage.src = 'img/5_background/second_half_background.png';
         this.gameOverImage.src = 'img/9_intro_outro_screens/game_over/game over.png';
-        
+        this.backgroundMusic = new Audio('audio/Guitar.mp3');
+        this.walkingSound = new Audio('audio/walk.mp3');
+        this.snoringSound = new Audio('audio/schnarchen.mp3');
+        this.jumpingSound = new Audio('audio/Jump.mp3');
+        this.throwingSound = new Audio('audio/throwing_bottles.mp3');
         this.backgroundMusic.loop = true;
         this.backgroundMusic.volume = 0.3;
         this.backgroundMusic.play();
@@ -39,19 +43,39 @@ class World {
         this.run();
     }
 
-    toggleSound(isSoundOn) {
-        this.soundOn = isSoundOn;
-
-        if (isSoundOn) {
-            this.backgroundMusic.play();
-            this.backgroundMusic.volume = 0.3;
-            this.character.resumeAllSounds();
+    toggleSound(status) {
+        this.soundOn = status;
+        if (this.soundOn) {
+            this.playAllSounds();
         } else {
-            this.backgroundMusic.pause();
-            this.backgroundMusic.currentTime = 0;
-            
+            this.pauseAllSounds();
         }
     }
+
+    playAllSounds() {
+        this.backgroundMusic.play();
+    }
+
+    pauseAllSounds() {
+        this.backgroundMusic.pause();
+        this.walkingSound.pause();
+        this.snoringSound.pause();
+        this.jumpingSound.pause();
+        this.throwingSound.pause();
+    }
+
+    playWalkingSound() {
+        if (this.soundOn) {
+            this.walkingSound.play();
+        }
+    }
+
+    stopWalkingSound() {
+        this.walkingSound.pause();
+        this.walkingSound.currentTime = 0;
+    }
+
+    
 
     playSound(sound) {
         if (sound) {
