@@ -36,9 +36,9 @@
 
     <canvas id="canvas" width="720" height="480"></canvas>
     <button id="soundButton">
-    <img id="soundImage" class="playbutton" src="img/icons8-ton-100.png"></button>
+        <img id="soundImage" class="playbutton" src="img/icons8-ton-100.png"></button>
     <button id="startButton">Start Game</button>
-    <div id="dialog-overlay"  onclick="closeDialog()"></div>
+    <div id="dialog-overlay" onclick="closeDialog()"></div>
     <div id="dialog" class="play">
         <img src="./img/wasd.png" alt="Controls">
         <div class="text">
@@ -56,13 +56,17 @@
         <p>Bitte drehen Sie Ihr Gerät ins Querformat, um das Spiel zu spielen.</p>
     </div>
 
-    <div id="mobileControls" style="display: none;">
-        <button id="btnLeft" class="control-btn">Left</button>
-        <button id="btnRight" class="control-btn">Right</button>
-        <button id="btnJump" class="control-btn">Jump</button>
-        <button id="btnThrow" class="control-btn">Throw</button>
+    <div id="mobileControls">
+        <button id="btnLeft" class="mobile_btn"><img src="img/left.png"></button>
+        <button id="btnRight" class="mobile_btn"><img src="img/right.png"></button>
+        <button id="btnJump" class="mobile_btn"><img src="img/jump-icon.png"></button>
+        <button id="btnThrow" class="mobile_btn"><img src="img/chili.png"></button>
     </div>
 
+    <footer>
+        <a target="_blank" href="Impressum.html">Impressum</a>
+        <a target="_blank" href="Datenschutz.html">Datenschutz</a>
+    </footer>
 
 </body>
 

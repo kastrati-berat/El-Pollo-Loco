@@ -16,6 +16,8 @@ function init() {
     startButton.style.display = 'block';
     startButton.addEventListener('click', () => {
         startButton.style.display = 'none';
+        openDialogButton.style.display = 'none';
+        document.getElementById('mobileControls').style.display = 'flex'; 
         initGame();
     });
 
@@ -25,16 +27,24 @@ function init() {
 function checkOrientation() {
     const warning = document.querySelector('.portrait-warning');
     const mobileControls = document.getElementById('mobileControls');
-    if (window.innerWidth <= 480 && window.innerHeight > window.innerWidth) {
-        warning.style.display = 'block';
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    if (width <= 480 && height > width) {
+        warning.style.display = 'flex';
         mobileControls.style.display = 'none';
+    } else if (width <= 480) { 
+        warning.style.display = 'none';  
+        mobileControls.style.display = 'block';
     } else {
         warning.style.display = 'none';
-        if (window.innerWidth <= 480) {
-            mobileControls.style.display = 'flex';
-        }
+        mobileControls.style.display = 'none';
     }
 }
+
+window.addEventListener('resize', checkOrientation);
+window.addEventListener('load', checkOrientation);
+
 
 
 
