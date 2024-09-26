@@ -17,7 +17,6 @@ function init() {
     startButton.addEventListener('click', () => {
         startButton.style.display = 'none';
         openDialogButton.style.display = 'none';
-        document.getElementById('mobileControls').style.display = 'flex'; 
         initGame();
     });
 
@@ -32,13 +31,11 @@ function checkOrientation() {
 
     if (width <= 480 && height > width) {
         warning.style.display = 'flex';
-        mobileControls.style.display = 'none';
     } else if (width <= 480) { 
         warning.style.display = 'none';  
         mobileControls.style.display = 'block';
     } else {
         warning.style.display = 'none';
-        mobileControls.style.display = 'none';
     }
 }
 
