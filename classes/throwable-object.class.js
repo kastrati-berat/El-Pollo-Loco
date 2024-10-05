@@ -17,11 +17,22 @@ class ThrowableObject extends MovableObject {
         this.speedY = 30;
         this.applyGravity();
         this.throw_sound.volume = 0.3;
-        this.throw_sound.play();
+
+        if (this.world.soundOn) {
+            this.throw_sound.currentTime = 0;
+            this.throw_sound.play();
+        }
+
         setInterval(() => {
             this.x += 10 * this.direction;
         }, 25);
+
         this.world.updateBottleStatusbar(-20);
+    }
+
+     pauseThrowSound() {
+        this.throw_sound.pause();
+        this.throw_sound.currentTime = 0;
     }
 
     draw(ctx) {

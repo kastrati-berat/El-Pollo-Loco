@@ -73,7 +73,7 @@ h1 {
 
 #startButton {
     position: relative;
-    top: 310px;
+    top: 730px;
     left: 130px;
     transform: translate(-50%, -50%);
     font-size: 70px;
@@ -93,8 +93,8 @@ h1 {
     cursor: pointer;
     border-radius: 5px;
     margin: 20px;
-    position: absolute;
-    top: 130%;
+    position: relative;
+    top: 700px;
     font-family: 'zabras';
 }
 
@@ -120,7 +120,7 @@ h1 {
 
 #soundButton {
     position: relative;
-    bottom: 10px;
+    top: 260px;
     left: 320px;
     cursor: pointer;
     border: none;
@@ -185,12 +185,11 @@ h1 {
 
 
 footer {
-    position: relative;
+    position: absolute;
     display: flex;
     gap: 32px;
-    top: 450px;
-    left: 350px;
-    font-size: 32px;
+    font-size: 40px;
+    bottom: 100px;
 }
 
 footer a {

@@ -19,7 +19,9 @@ class World {
     gameOverSound = new Audio('Audio/game over.wav');
     backgroundMusic = new Audio('Audio/Guitar.mp3');
     soundOn = true;
+    throwInProgress = false;
     
+
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
@@ -29,28 +31,25 @@ class World {
         this.bottles = this.level.bottles;
         this.backgroundImage.src = 'img/5_background/second_half_background.png';
         this.gameOverImage.src = 'img/9_intro_outro_screens/game_over/game over.png';
-        this.backgroundMusic = new Audio('audio/Guitar.mp3');
-        this.walkingSound = new Audio('audio/walk.mp3');
-        this.snoringSound = new Audio('audio/schnarchen.mp3');
-        this.jumpingSound = new Audio('audio/Jump.mp3');
-        this.throwingSound = new Audio('audio/throwing_bottles.mp3');
         this.backgroundMusic.loop = true;
         this.backgroundMusic.volume = 0.3;
-        this.backgroundMusic.play();
+        this.backgroundMusic.play(); 
         
         this.draw();
         this.setWorld();
         this.run();
     }
 
-    toggleSound(status) {
-        this.soundOn = status;
+    toggleSound() {
+        this.soundOn = !this.soundOn;
+    
         if (this.soundOn) {
-            this.playAllSounds();
+            this.resumeAllSounds(); 
         } else {
             this.pauseAllSounds();
         }
     }
+
 
     playAllSounds() {
         this.backgroundMusic.play();
@@ -58,33 +57,22 @@ class World {
 
     pauseAllSounds() {
         this.backgroundMusic.pause();
-        this.walkingSound.pause();
-        this.snoringSound.pause();
-        this.jumpingSound.pause();
-        this.throwingSound.pause();
+        this.character.pauseAllSounds(); 
+      
+        this.throwableObjects.forEach(object => object.pauseThrowSound());
     }
 
-    playWalkingSound() {
-        if (this.soundOn) {
-            this.walkingSound.play();
-        }
+    resumeAllSounds() {
+        this.backgroundMusic.play();
+        this.character.resumeAllSounds(); 
+
+        this.throwableObjects.forEach(object => {
+            if (object.throw_sound.paused) {
+                object.throw_sound.play();
+            }
+        });
     }
 
-    stopWalkingSound() {
-        this.walkingSound.pause();
-        this.walkingSound.currentTime = 0;
-    }
-
-    
-
-    playSound(sound) {
-        if (sound) {
-            sound.volume = 1.0;
-            sound.play().catch(error => {
-                console.error("Error playing sound: ", error);
-            });
-        }
-    }
 
     setWorld() {
         this.character.world = this;
@@ -99,8 +87,9 @@ class World {
                 this.checkCollectBottles();
             }
         }, 200);
+        
     }
-    
+
     checkThrowObjects() {
         if (this.keyboard.D && !this.gameOver) {
             if (this.collectedBottles > 0) {
@@ -119,7 +108,7 @@ class World {
                 this.character.hit();
                 this.statusBar.setPercentage(this.character.energy);
                 if (this.character.isDead()) {
-                    this.handleGameOver(); 
+                    this.handleGameOver();
                 }
             }
         });
@@ -163,18 +152,18 @@ class World {
             this.backgroundMusic.pause();
             this.backgroundMusic.currentTime = 0;
         }
-        
+
         this.gameOverSound.volume = 0.3;
         this.gameOverSound.play();
-        
+
         if (this.character) {
             this.character.stopAllSounds();
         }
         this.showGameOver();
         document.getElementById('startButton').style.display = 'block';
     }
-    
-    
+
+
 
     showGameOver() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
