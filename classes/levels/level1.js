@@ -1,13 +1,19 @@
 let level1;
+
 function initLevel() {
     level1 = new Level(
         [
-            new Chicken(),
-            new Chicken(),
-            new Chicken(),
-            new Chicken(),
-            new Chicken(),
-            new Endboss(),
+            createChickenWithSpacing(Chicken, 0),
+            createChickenWithSpacing(ChickenSmall, 250), 
+            createChickenWithSpacing(Chicken, 400), 
+            createChickenWithSpacing(ChickenSmall, 550), 
+            createChickenWithSpacing(Chicken, 600), 
+            createChickenWithSpacing(Chicken, 750), 
+            createChickenWithSpacing(ChickenSmall, 850), 
+            createChickenWithSpacing(Chicken, 1000), 
+            createChickenWithSpacing(ChickenSmall, 1200),
+            createChickenWithSpacing(Chicken, 1350), 
+            new Endboss(), 
         ],
 
         [
@@ -46,4 +52,11 @@ function initLevel() {
             new BackgroundObject('img/5_background/layers/1_first_layer/2.png', 719 * 3),
         ],
     );
+}
+
+// Funktion zur Erstellung von Hühnern mit festem Abstand
+function createChickenWithSpacing(ChickenClass, offset) {
+    const chicken = new ChickenClass();
+    chicken.x = 700 + offset; // Setze den x-Wert basierend auf dem Offset
+    return chicken;
 }

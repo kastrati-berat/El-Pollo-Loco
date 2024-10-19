@@ -25,7 +25,11 @@ class ThrowableObject extends MovableObject {
 
         setInterval(() => {
             this.x += 10 * this.direction;
+            if (this instanceof Bottle) {
+                this.startRotation();
+            }
         }, 25);
+        
 
         this.world.updateBottleStatusbar(-20);
     }
