@@ -86,6 +86,10 @@ class Character extends MovableObject {
         this.animate();
     }
 
+    isFalling() {
+        return this.speedY > 0;
+    }
+
     animate() {
     this.soundInterval = setInterval(() => {
         this.isMoving = false;

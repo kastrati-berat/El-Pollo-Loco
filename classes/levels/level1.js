@@ -54,9 +54,9 @@ function initLevel() {
     );
 }
 
-// Funktion zur Erstellung von Hühnern mit festem Abstand
+
 function createChickenWithSpacing(ChickenClass, offset) {
     const chicken = new ChickenClass();
-    chicken.x = 700 + offset; // Setze den x-Wert basierend auf dem Offset
+    chicken.x = 700 + offset; 
     return chicken;
 }

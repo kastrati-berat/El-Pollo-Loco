@@ -213,6 +213,11 @@ footer a {
     color: lawngreen;
 }
 
+.impressum p {
+    margin-left: 200px;
+    margin-right: 200px;
+}
+
 @media only screen and (max-width: 720px) and (orientation: landscape) {
     #mobileControls {
         display: flex;
@@ -236,7 +241,6 @@ footer a {
     #soundButton {
         left: 300px;
     }
-
 }
 
 @media only screen and (max-width: 480px) {
@@ -260,4 +264,9 @@ footer a {
     h1 {
         display: none;
     }
+
+    .impressum h1 {
+        display: block;
+    }
+
 }

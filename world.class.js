@@ -18,9 +18,10 @@ class World {
     backgroundImage = new Image();
     gameOverSound = new Audio('Audio/game over.wav');
     backgroundMusic = new Audio('Audio/Guitar.mp3');
+    chickenDeadSound = new Audio('Audio/chicken_dead.mp3');
     soundOn = true;
     throwInProgress = false;
-    
+
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -33,8 +34,8 @@ class World {
         this.gameOverImage.src = 'img/9_intro_outro_screens/game_over/game over.png';
         this.backgroundMusic.loop = true;
         this.backgroundMusic.volume = 0.3;
-        this.backgroundMusic.play(); 
-        
+        this.backgroundMusic.play();
+
         this.draw();
         this.setWorld();
         this.run();
@@ -42,9 +43,9 @@ class World {
 
     toggleSound() {
         this.soundOn = !this.soundOn;
-    
+
         if (this.soundOn) {
-            this.resumeAllSounds(); 
+            this.resumeAllSounds();
         } else {
             this.pauseAllSounds();
         }
@@ -57,15 +58,32 @@ class World {
 
     pauseAllSounds() {
         this.backgroundMusic.pause();
-        this.character.pauseAllSounds(); 
-      
+        if (!this.gameOverSound.paused) {
+            this.gameOverSound.pause();
+            this.gameOverSound.currentTime = 0;
+        }
+        if (!this.chickenDeadSound.paused) {
+            this.chickenDeadSound.pause();
+            this.chickenDeadSound.currentTime = 0;
+        }
+        this.character.pauseAllSounds();
         this.throwableObjects.forEach(object => object.pauseThrowSound());
     }
 
-    resumeAllSounds() {
-        this.backgroundMusic.play();
-        this.character.resumeAllSounds(); 
 
+
+
+    resumeAllSounds() {
+        if (this.backgroundMusic.paused) {
+            this.backgroundMusic.play();
+        }
+        this.character.resumeAllSounds();
+        if (!this.gameOverSound.paused && this.soundOn) {
+            this.gameOverSound.play();
+        }
+        if (!this.chickenDeadSound.paused && this.soundOn) {
+            this.chickenDeadSound.play();
+        }
         this.throwableObjects.forEach(object => {
             if (object.throw_sound.paused) {
                 object.throw_sound.play();
@@ -73,7 +91,7 @@ class World {
         });
     }
 
-
+    
     setWorld() {
         this.character.world = this;
     }
@@ -87,7 +105,7 @@ class World {
                 this.checkCollectBottles();
             }
         }, 200);
-        
+
     }
 
     checkThrowObjects() {
@@ -105,14 +123,55 @@ class World {
     checkCollisions() {
         this.level.enemies.forEach((enemy) => {
             if (this.character.isColliding(enemy)) {
-                this.character.hit();
-                this.statusBar.setPercentage(this.character.energy);
-                if (this.character.isDead()) {
-                    this.handleGameOver();
+                const characterAboveEnemy =
+                    this.character.y + this.character.height * 0.75 <= enemy.y &&
+                    this.character.speedY > 0;
+                const characterBelowEnemy =
+                    this.character.y + this.character.height > enemy.y + enemy.height &&
+                    this.character.speedY >= 0;
+                if (characterAboveEnemy) {
+                    this.killChicken(enemy);
+                    this.character.speedY = 15;
+                    this.character.y = enemy.y - this.character.height;
+                } else if (characterBelowEnemy) {
+                } else {
+                    if (!enemy.isDead) {
+                        this.character.hit();
+                        this.statusBar.setPercentage(this.character.energy);
+                        if (this.character.isDead()) {
+                            this.handleGameOver();
+                        }
+                    }
                 }
             }
         });
     }
+
+
+
+    killChicken(chicken) {
+        chicken.isDead = true;
+        if (chicken instanceof ChickenSmall) {
+            chicken.loadImage('img/3_enemies_chicken/chicken_small/2_dead/dead.png');
+        } else {
+            chicken.loadImage('img/3_enemies_chicken/chicken_normal/2_dead/dead.png');
+        }
+        if (this.soundOn && this.chickenDeadSound.paused) {
+            this.chickenDeadSound.volume = 0.3;
+            this.chickenDeadSound.play();
+        }
+        setTimeout(() => {
+            const index = this.level.enemies.indexOf(chicken);
+            if (index > -1) {
+                this.level.enemies.splice(index, 1);
+            }
+        }, 1000);
+    }
+
+
+
+
+
 
     checkCollectCoins() {
         if (!this.gameOver) {
@@ -152,9 +211,10 @@ class World {
             this.backgroundMusic.pause();
             this.backgroundMusic.currentTime = 0;
         }
-
-        this.gameOverSound.volume = 0.3;
-        this.gameOverSound.play();
+        if (this.soundOn && this.gameOverSound.paused) {
+            this.gameOverSound.volume = 0.3;
+            this.gameOverSound.play();
+        }
 
         if (this.character) {
             this.character.stopAllSounds();
@@ -162,6 +222,7 @@ class World {
         this.showGameOver();
         document.getElementById('startButton').style.display = 'block';
     }
+
 
 
 
