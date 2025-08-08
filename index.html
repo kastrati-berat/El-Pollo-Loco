@@ -34,25 +34,27 @@
 
 <body onload="init()">
     <h1>El Pollo Loco</h1>
-
-    <canvas id="canvas" width="720" height="480"></canvas>
-    <button id="soundButton">
-        <img id="soundImage" class="playbutton" src="img/icons8-ton-100.png"></button>
-    <button id="startButton">Start Game</button>
-    <div id="dialog-overlay" onclick="closeDialog()"></div>
-    <div id="dialog" class="play">
-        <img src="./img/wasd.png" alt="Controls">
-        <div class="text">
-            <h2>W : Jump</h2>
-            <h2>A : Move left</h2>
-            <h2>D : Move Right</h2>
-            <h2>E : Throw Salsa Bottles</h2>
+    <div id="gameContainer">
+        <canvas id="canvas" width="720" height="480"></canvas>
+        <button id="soundButton">
+            <img id="soundImage" class="playbutton" src="img/icons8-ton-100.png">
+        </button>
+    </div>
+    <div id="buttonContainer">
+        <button id="startButton">Start Game</button>
+        <div id="dialog-overlay" onclick="closeDialog()"></div>
+        <div id="dialog" class="play">
+            <img src="./img/wasd.png" alt="Controls">
+            <div class="text">
+                <h2>W : Jump</h2>
+                <h2>A : Move left</h2>
+                <h2>D : Move Right</h2>
+                <h2>E : Throw Salsa Bottles</h2>
+            </div>
+            <button id="closeDialog" onclick="closeDialog()">Close</button>
         </div>
-        <button id="closeDialog" onclick="closeDialog()">Close</button>
+        <button id="openDialogButton" onclick="openDialog()">How to Play</button>
     </div>
-    <button id="openDialogButton" onclick="openDialog()">How to Play</button>
-    </div>
-
     <div class="portrait-warning" style="display: none;">
         <p>Bitte drehen Sie Ihr Gerät ins Querformat, um das Spiel zu spielen.</p>
     </div>
@@ -63,7 +65,7 @@
         <button id="btnJump" class="mobile_btn"><img src="img/jump-icon.png"></button>
         <button id="btnThrow" class="mobile_btn"><img src="img/chili.png"></button>
     </div>
-    
+
 
     <footer>
         <a target="_blank" href="Impressum.html">Impressum</a>
